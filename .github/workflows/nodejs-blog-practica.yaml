@@ -67,5 +67,9 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add README.md
-          git commit -m "Actualizar badge de resultados de tests de Cypress - ${{ steps.cypress-output.outputs.cypress_outcome }}"
-          git push
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Actualizar badge de resultados de tests de Cypress - ${{ steps.cypress-output.outputs.cypress_outcome }}"
+            git push
+          fi
