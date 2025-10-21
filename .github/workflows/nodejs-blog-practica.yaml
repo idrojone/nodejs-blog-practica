@@ -69,5 +69,3 @@ jobs:
           git add README.md
           git commit -m "Actualizar badge de resultados de tests de Cypress - ${{ steps.cypress-output.outputs.cypress_outcome }}"
           git push
-
-
