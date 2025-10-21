@@ -21,6 +21,7 @@ runs:
         # Crear sección de badge al README si no existe
         if ! grep -q "RESULTAT DE LOS ÚLTIMOS TESTS" README.md; then
           echo -e "\n## RESULTAT DE LOS ÚLTIMOS TESTS\n" >> README.md
+          echo "![Cypress Tests]($BADGE_URL)" >> README.md
         else
           sed -i "/RESULTAT DE LOS ÚLTIMOS TESTS/{n; s|https://img.shields.io/badge[^)]*|$BADGE_URL|;}" README.md
         fi
