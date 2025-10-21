@@ -1,0 +1,26 @@
+name: Añadir badge al README
+inputs:
+  cypress_outcome:
+    description: 'Resultado de los tests de Cypress (success o failure)'
+    required: true
+    default: 'failure'  
+runs:
+  using: 'composite'
+  steps:
+    - name: Añadir badge al README
+      shell: bash
+      run: |
+        echo "Cypress outcome: ${{ inputs.cypress_outcome }}"
+
+        if [ "${{ inputs.cypress_outcome }}" = "success" ]; then
+          BADGE_URL="https://img.shields.io/badge/tested%20with-Cypress-04C38E.svg"
+        else
+          BADGE_URL="https://img.shields.io/badge/test-failure-red"
+        fi
+
+        # Crear sección de badge al README si no existe
+        if ! grep -q "RESULTAT DE LOS ÚLTIMOS TESTS" README.md; then
+          echo -e "\n## RESULTAT DE LOS ÚLTIMOS TESTS\n" >> README.md
+        else
+          sed -i "/RESULTAT DE LOS ÚLTIMOS TESTS/{n; s|https://img.shields.io/badge[^)]*|$BADGE_URL|;}" README.md
+        fi
