@@ -41,7 +41,7 @@ jobs:
             echo "failure" > result.txt
           fi
       - name: Subir resultado artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cypress-test-result
           path: result.txt
