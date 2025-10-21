@@ -17,3 +17,32 @@ jobs:
           cache: 'npm'
       - run: npm ci # npm install para desarrollo local y ci para entornos de CI/CD 
       - run: npm run lint
+  cypress_job:
+    runs-on: ubuntu-latest
+    needs: linter_job
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - run: npm ci
+      - name: Checkout Cypress
+        uses: cypress-io/github-action@v5
+        continue-on-error: true
+        with:
+          start: npm start
+          wait-on: 'http://localhost:3000'
+      - name: Guardar resultado test
+        run: |
+          if [ $? -eq 0 ]; then
+            echo "success" > result.txt
+          else
+            echo "failure" > result.txt
+          fi
+      - name: Subir resultado artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-test-result
+          path: result.txt
+      
