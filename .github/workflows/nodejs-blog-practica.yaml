@@ -59,7 +59,7 @@ jobs:
         id: cypress-output
         run: echo "::set-output name=cypress_outcome::$(cat result.txt)"
       - name: Actualizar README con badge
-        uses: ./.github/workflows/actions/add-badge
+        uses: ./.github/actions/add-badge
         with:
           cypress_outcome: ${{ steps.cypress-output.outputs.cypress_outcome }}
       - name: Hacer commit y push del README actualizado
@@ -85,3 +85,31 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+  notification_job:
+    runs-on: ubuntu-latest
+    needs: [linter_job, cypress_job, add_badge_job, deploy_job]
+    if: always()
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v5
+      - name: Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - name: Instalar dependencias
+        run: |
+          cd .github/actions/send-email
+          npm install
+      - name: Enviar email
+        uses: ./.github/actions/send-email
+        with:
+          usuario_email: 'jordivallspla@gmail.com'
+          resultado_workflow: |
+            Linter: ${{ needs.linter_job.result }}
+            Cypress: ${{ needs.cypress_job.result }}
+            Add Badge: ${{ needs.add_badge_job.result }}
+            Deploy: ${{ needs.deploy_job.result }}
+        env:
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL: ${{ secrets.EMAIL }}

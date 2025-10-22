@@ -1,0 +1,13 @@
+name: Send Email
+inputs:
+  usuario_email:
+    description: 'Recipient email address'
+    required: true
+    default: 'jordivallspla@gmail.com'
+  resultado_workflow:
+    description: 'Resultado del workflow'
+    required: true
+  
+runs:
+  using: 'node18'
+  main: 'index.js'
