@@ -29,7 +29,7 @@ console.log(process.env.EMAIL);
 // });
 
 
-const transporter = nodemailer.createTransport({
+const transporter = nodeMailer.createTransport({
     host: "smtp.ethereal.email",
     port: 587,
     secure: false, // true for 465, false for other ports
