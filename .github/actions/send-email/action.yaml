@@ -1,4 +1,5 @@
 name: Send Email
+description: 'Send email'
 inputs:
   usuario_email:
     description: 'Recipient email address'
@@ -7,7 +8,7 @@ inputs:
   resultado_workflow:
     description: 'Resultado del workflow'
     required: true
-  
+
 runs:
-  using: 'node16'
+  using: 'node18'
   main: 'index.js'

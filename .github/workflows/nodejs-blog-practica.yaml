@@ -111,5 +111,5 @@ jobs:
             Add Badge: ${{ needs.add_badge_job.result }}
             Deploy: ${{ needs.deploy_job.result }}
         env:
-          EMAIL_USER: ${{ secrets.USUARIO_EMAIL }}
-          EMAIL: ${{ secrets.EMAIL }}
+          EMAIL_USER: ${{ secrets.GMAIL_USUARIO }}
+          EMAIL: ${{ secrets.GMAIL_TOKEN }}
