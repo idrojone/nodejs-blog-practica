@@ -110,6 +110,5 @@ jobs:
             Cypress: ${{ needs.cypress_job.result }}
             Add Badge: ${{ needs.add_badge_job.result }}
             Deploy: ${{ needs.deploy_job.result }}
-        env:
           EMAIL_USER: ${{ secrets.GMAIL_USUARIO }}
           EMAIL: ${{ secrets.GMAIL_TOKEN }}
