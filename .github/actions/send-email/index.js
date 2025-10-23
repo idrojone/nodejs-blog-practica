@@ -1,5 +1,4 @@
 const nodeMailer = require('nodemailer');  
-const core = require('@actions/core');
 
 const enviador = nodeMailer.createTransport({
     service: "gmail",
