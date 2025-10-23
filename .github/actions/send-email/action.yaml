@@ -7,8 +7,7 @@ inputs:
     default: 'jordivallspladaw@gmail.com'
   resultado_workflow:
     description: 'Resultado del workflow'
-    required: false
-    default: ''
+    required: true
   GMAIL_TOKEN_USER:
     description: 'Email user'
     required: true

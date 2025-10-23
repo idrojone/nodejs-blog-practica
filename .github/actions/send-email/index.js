@@ -11,11 +11,18 @@ const enviador = nodeMailer.createTransport({
 });
 
 async function enviar() {
+    const resultado = process.env.INPUT_RESULTADO_WORKFLOW ;
+
+    const htmlBody = `
+        <p>S'ha realitzat un push en la branca main que ha provocat l'execució del workflow nodejs-blog-practica amb els següents resultats:</p>
+        <ul>${resultado}</ul>
+    `;
+
     await enviador.sendMail({
         from: process.env.INPUT_GMAIL_TOKEN_USER,
         to: process.env.INPUT_GMAIL_TOKEN_USER,
         subject: 'Resultat del workflow executat',
-        html: "<p>S'ha realitzat un push en la branca main que ha provocat l'execució del workflow nodejs-blog-practica amb els següents resultats:</p>",
+        html: htmlBody,
     });
 }
 
