@@ -104,7 +104,7 @@ jobs:
       - name: Enviar email
         uses: ./.github/actions/send-email
         with:
-          usuario_email: 'jordivallspla@gmail.com'
+          usuario_email: 'jordivallspladaw@gmail.com'
           # resultado_workflow: |
           #   Linter: ${{ needs.linter_job.result }}
           #   Cypress: ${{ needs.cypress_job.result }}

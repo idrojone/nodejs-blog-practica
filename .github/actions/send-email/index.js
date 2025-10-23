@@ -1,6 +1,6 @@
 const nodeMailer = require('nodemailer');  
 
-console.log(process.env.INPUT_GMAIL_TOKEN_USER);
+console.log(process.env.INPUT_GMAIL_TOKEN_USER, "test");
 
 const enviador = nodeMailer.createTransport({
     service: "gmail",

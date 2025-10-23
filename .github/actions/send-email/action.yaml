@@ -4,7 +4,7 @@ inputs:
   usuario_email:
     description: 'Recipient email address'
     required: true
-    default: 'jordivallspla@gmail.com'
+    default: 'jordivallspladaw@gmail.com'
   resultado_workflow:
     description: 'Resultado del workflow'
     required: true
