@@ -1,15 +1,13 @@
 const nodeMailer = require('nodemailer');  
+const core = require('@actions/core');
 
-console.log(process.env.USUARIO_EMAIL);
-console.log(process.env.EMAIL);
-
-const enviador =  nodeMailer.createTransport({
+const enviador = nodeMailer.createTransport({
     service: "gmail",
     auth: {
         type: "OAuth2",
-        user: process.env.USUARIO_EMAIL,
-        pass: process.env.EMAIL,
-    }
+        user: process.env.INPUT_USUARIO_EMAIL,
+        pass: process.env.INPUT_EMAIL,
+    },
 });
 
 
@@ -18,7 +16,7 @@ async function enviar() {
         from: process.env.USUARIO_EMAIL,
         to: "jordivallspladaw@gmail.com",
         subject: "Resultat del workflow executat",
-        html: "<p>S'ha realitzat un push en la branca main que ha provocat l'execució del workflow nom_repositori_workflow amb els següents resultats:</p>",
+        html: "<p>S'ha realitzat un push en la branca main que ha provocat l'execució del workflow nodejs-blog-practica amb els següents resultats:</p>",
     });
 }
 
