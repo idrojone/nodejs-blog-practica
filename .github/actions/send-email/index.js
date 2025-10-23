@@ -1,5 +1,7 @@
 const nodeMailer = require('nodemailer');  
 
+console.log(process.env.INPUT_USUARIO_EMAIL);
+
 const enviador = nodeMailer.createTransport({
     service: "gmail",
     auth: {

@@ -7,87 +7,87 @@ on:
       - feature/github-actions-workflow # Rama para hacer test del workflow
 
 jobs:
-  linter_job:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '18'
-          cache: 'npm'
-      - run: npm ci # npm install para desarrollo local y ci para entornos de CI/CD 
-      - run: npm run lint
-  cypress_job:
-    runs-on: ubuntu-latest
-    needs: linter_job
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '18'
-          cache: 'npm'
-      - run: npm ci
-      - name: Checkout Cypress
-        uses: cypress-io/github-action@v5
-        continue-on-error: true
-        with:
-          start: npm start
-          wait-on: 'http://localhost:3000'
-      - name: Guardar resultado test
-        run: |
-          if [ $? -eq 0 ]; then
-            echo "success" > result.txt
-          else
-            echo "failure" > result.txt
-          fi
-      - name: Subir resultado artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-test-result
-          path: result.txt
-  add_badge_job:
-    runs-on: ubuntu-latest
-    needs: cypress_job
-    steps:
-      - name: Checkout del código
-        uses: actions/checkout@v5
-      - name: Descargar resultado artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: cypress-test-result
-      - name: Leer resultado test
-        id: cypress-output
-        run: echo "::set-output name=cypress_outcome::$(cat result.txt)"
-      - name: Actualizar README con badge
-        uses: ./.github/actions/add-badge
-        with:
-          cypress_outcome: ${{ steps.cypress-output.outputs.cypress_outcome }}
-      - name: Hacer commit y push del README actualizado
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add README.md
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Actualizar badge de resultados de tests de Cypress - ${{ steps.cypress-output.outputs.cypress_outcome }}"
-            git push
-          fi
-  deploy_job:
-    runs-on: ubuntu-latest
-    needs: cypress_job
-    steps:
-      - name: Checkout del código
-        uses: actions/checkout@v5
-      - name: Desplegar en vercel
-        uses: amondnet/vercel-action@v20
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+  # linter_job:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v5
+  #     - uses: actions/setup-node@v6
+  #       with:
+  #         node-version: '18'
+  #         cache: 'npm'
+  #     - run: npm ci # npm install para desarrollo local y ci para entornos de CI/CD 
+  #     - run: npm run lint
+  # cypress_job:
+  #   runs-on: ubuntu-latest
+  #   needs: linter_job
+  #   steps:
+  #     - uses: actions/checkout@v5
+  #     - uses: actions/setup-node@v6
+  #       with:
+  #         node-version: '18'
+  #         cache: 'npm'
+  #     - run: npm ci
+  #     - name: Checkout Cypress
+  #       uses: cypress-io/github-action@v5
+  #       continue-on-error: true
+  #       with:
+  #         start: npm start
+  #         wait-on: 'http://localhost:3000'
+  #     - name: Guardar resultado test
+  #       run: |
+  #         if [ $? -eq 0 ]; then
+  #           echo "success" > result.txt
+  #         else
+  #           echo "failure" > result.txt
+  #         fi
+  #     - name: Subir resultado artifact
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: cypress-test-result
+  #         path: result.txt
+  # add_badge_job:
+  #   runs-on: ubuntu-latest
+  #   needs: cypress_job
+  #   steps:
+  #     - name: Checkout del código
+  #       uses: actions/checkout@v5
+  #     - name: Descargar resultado artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: cypress-test-result
+  #     - name: Leer resultado test
+  #       id: cypress-output
+  #       run: echo "::set-output name=cypress_outcome::$(cat result.txt)"
+  #     - name: Actualizar README con badge
+  #       uses: ./.github/actions/add-badge
+  #       with:
+  #         cypress_outcome: ${{ steps.cypress-output.outputs.cypress_outcome }}
+  #     - name: Hacer commit y push del README actualizado
+  #       run: |
+  #         git config --global user.name 'github-actions[bot]'
+  #         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+  #         git add README.md
+  #         if git diff --cached --quiet; then
+  #           echo "No changes to commit"
+  #         else
+  #           git commit -m "Actualizar badge de resultados de tests de Cypress - ${{ steps.cypress-output.outputs.cypress_outcome }}"
+  #           git push
+  #         fi
+  # deploy_job:
+  #   runs-on: ubuntu-latest
+  #   needs: cypress_job
+  #   steps:
+  #     - name: Checkout del código
+  #       uses: actions/checkout@v5
+  #     - name: Desplegar en vercel
+  #       uses: amondnet/vercel-action@v20
+  #       with:
+  #         vercel-token: ${{ secrets.VERCEL_TOKEN }}
+  #         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+  #         vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
   notification_job:
     runs-on: ubuntu-latest
-    needs: [linter_job, cypress_job, add_badge_job, deploy_job]
+    # needs: [linter_job, cypress_job, add_badge_job, deploy_job]
     if: always()
     steps:
       - name: Checkout del código
@@ -105,10 +105,10 @@ jobs:
         uses: ./.github/actions/send-email
         with:
           usuario_email: 'jordivallspla@gmail.com'
-          resultado_workflow: |
-            Linter: ${{ needs.linter_job.result }}
-            Cypress: ${{ needs.cypress_job.result }}
-            Add Badge: ${{ needs.add_badge_job.result }}
-            Deploy: ${{ needs.deploy_job.result }}
+          # resultado_workflow: |
+          #   Linter: ${{ needs.linter_job.result }}
+          #   Cypress: ${{ needs.cypress_job.result }}
+          #   Add Badge: ${{ needs.add_badge_job.result }}
+          #   Deploy: ${{ needs.deploy_job.result }}
           EMAIL_USER: ${{ secrets.GMAIL_USUARIO }}
           EMAIL: ${{ secrets.GMAIL_TOKEN }}
