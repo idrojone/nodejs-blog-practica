@@ -1,6 +1,6 @@
 const nodeMailer = require('nodemailer');  
 
-console.log(process.env.INPUT_USUARIO_EMAIL);
+console.log(process.env.INPUT_GMAIL_TOKEN_USER);
 
 const enviador = nodeMailer.createTransport({
     service: "gmail",
@@ -14,7 +14,7 @@ const enviador = nodeMailer.createTransport({
 
 async function enviar() {
     await enviador.sendMail({
-        from: process.env.USUARIO_EMAIL,
+        from: process.env.INPUT_GMAIL_TOKEN_USER,
         to: "jordivallspladaw@gmail.com",
         subject: "Resultat del workflow executat",
         html: "<p>S'ha realitzat un push en la branca main que ha provocat l'execució del workflow nodejs-blog-practica amb els següents resultats:</p>",
