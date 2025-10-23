@@ -8,10 +8,10 @@ inputs:
   resultado_workflow:
     description: 'Resultado del workflow'
     required: true
-  EMAIL_USER:
+  GMAIL_TOKEN_USER:
     description: 'Email user'
     required: true
-  EMAIL:
+  GMAIL_TOKEN:
     description: 'Email token'
     required: true
 

@@ -6,8 +6,8 @@ const enviador = nodeMailer.createTransport({
     service: "gmail",
     auth: {
         type: "OAuth2",
-        user: process.env.INPUT_USUARIO_EMAIL,
-        pass: process.env.INPUT_EMAIL,
+        user: process.env.INPUT_GMAIL_TOKEN_USER,
+        pass: process.env.INPUT_GMAIL_TOKEN,
     },
 });
 
