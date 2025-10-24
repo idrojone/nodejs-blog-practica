@@ -1,0 +1,20 @@
+name: Send Email
+description: 'Send email'
+inputs:
+  usuario_email:
+    description: 'Recipient email address'
+    required: true
+    default: 'jordivallspladaw@gmail.com'
+  resultado_workflow:
+    description: 'Resultado del workflow'
+    required: true
+  GMAIL_TOKEN_USER:
+    description: 'Email user'
+    required: true
+  GMAIL_TOKEN:
+    description: 'Email token'
+    required: true
+
+runs:
+  using: 'node16'
+  main: 'index.js'
